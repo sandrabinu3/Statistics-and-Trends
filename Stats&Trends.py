@@ -41,3 +41,15 @@ plt.xticks([r + bar_width for r in range(len(x))], x)
 plt.legend(['2006', '2008', '2010', '2012','2014'])
 plt.title('Electric power consumption')
 plt.show()
+
+
+
+lst=[]
+for i in pro_list:
+    a=i[i['Country Name']=='Russian Federation']['2014'].unique()[0]
+    lst.append(a)
+src_list=['Oil','Nuclear','Natural Gas','Hydroelectric','Other Renewable','Coal']
+plt.figure(2)
+plt.pie(lst,labels=src_list,autopct='%1.1f%%', startangle=90,explode=(0.1,0,0,0,0.08,0))
+plt.title('Electricity production from different sources in Russian Federation')
+plt.show()
