@@ -16,3 +16,28 @@ def readFile(filename,cntry_list,indicator):
     trans_df=trans_df[1:]
     trans_df.index.names=['Years']
     return final_df,trans_df
+
+
+plt.figure(0)
+x=ele_cons['Country Name']
+
+y1 = ele_cons['2006']
+y2 = ele_cons['2008']
+y3 = ele_cons['2010']
+y4 = ele_cons['2012']
+y5 = ele_cons['2014']
+bar_width=0.1
+r1=range(len(x))
+r2 = [x + bar_width for x in r1]
+r3 = [x + bar_width for x in r2]
+r4 = [x + bar_width for x in r3]
+r5=[x+bar_width for x in r4]
+plt.bar(r1, y1, color='b', width=bar_width)
+plt.bar(r2, y2, color='r', width=bar_width)
+plt.bar(r3, y3, color='g', width=bar_width)
+plt.bar(r4, y4, color='y', width=bar_width)   
+plt.bar(r5, y5, width=bar_width)
+plt.xticks([r + bar_width for r in range(len(x))], x)
+plt.legend(['2006', '2008', '2010', '2012','2014'])
+plt.title('Electric power consumption')
+plt.show()
