@@ -53,3 +53,27 @@ plt.figure(2)
 plt.pie(lst,labels=src_list,autopct='%1.1f%%', startangle=90,explode=(0.1,0,0,0,0.08,0))
 plt.title('Electricity production from different sources in Russian Federation')
 plt.show()
+
+
+
+
+
+tot_lst=list(access_tot[access_tot['Country Name']=='India'].iloc[0:,1:].values[0])
+urban_lst=list(access_urban[access_urban['Country Name']=='India'].iloc[0:,1:].values[0])
+rural_lst=list(access_rural[access_rural['Country Name']=='India'].iloc[0:,1:].values[0])
+
+india_df={'Years':list(np.arange(2006,2015)),
+         'Total':tot_lst,
+         'Urban':urban_lst,
+         'Rural':rural_lst}
+india=pd.DataFrame(india_df)
+
+plt.figure(figsize=(10,6))
+
+plt.plot(india['Years'],india['Total'],label='Total',linestyle='--',marker='o')
+plt.plot(india['Years'],india['Urban'],label='Urban',linestyle='--',marker='o')
+plt.plot(india['Years'],india['Rural'],label='Rural',linestyle='--',marker='o')
+
+plt.title('Access to Electricity')
+plt.legend()
+plt.show()
