@@ -67,7 +67,7 @@ def Barplot(data, bar_width=0.1):
     plt.xlabel('Countries')
     plt.ylabel('Electricity Consumption in KWh')
     plt.title('Electric Power Consumption')
-    plt.savefig('Boxplot.png')
+    plt.savefig('Barplot.png')
     plt.show()
 
 
@@ -165,6 +165,7 @@ def Boxplot(data):
     sns.boxplot(data)
     plt.title('Electricity Consumption in Different Countries from 2005-2014')
     plt.ylabel('Electricity Consumption(KWh)')
+    plt.xlabel('Country')
     plt.savefig('Boxplot.png')
     plt.show()
 
