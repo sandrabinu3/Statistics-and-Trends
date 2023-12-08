@@ -1,21 +1,69 @@
 
+#importing the required modules
 import pandas as pd 
 import numpy as np
-import matplotlib.pyplot as pyplot
+import matplotlib.pyplot as plt
 import seaborn as sns
 
 def readFile(filename,cntry_list,indicator):
-    df=pd.read_excel(filename,skiprows=2,header=1)
+    """ function to read and clean a World Bank file
+
+    Args:
+        filename (string): filepath to the World Bank file
+        cntry_list (list): list of selected Countries
+        indicator (string): indicator selected
+
+    Returns:
+        final_df (dataframe): clean dataframe of selected indicator in
+            selected countries for selected years having years as columns
+        trans_df (dataframe): transposed dataframe of final_df having
+                            countries as columns
+    """
+    df=pd.read_csv(filename,skiprows=2,header=1)
     ref_df=df[(df['Country Name'].isin(cntry_list)) & (df['Indicator Name']==indicator)]
     ref_df=ref_df.drop(df.columns[1:4],axis=1)
-    yr=[str(year) for year in range(1960,2011)] + [str(year) for year in range(2021,2023)]
+    ref_df=ref_df.drop(df.columns[-1:],axis=1)
+    yr=[str(year) for year in range(1960,2006)] + [str(year) for year in range(2015,2023)]
     final_df=ref_df.drop(columns=yr)
     final_df=final_df.reset_index(drop=True)
     trans_df=final_df.transpose()
-    trans_.columns=trans_df.iloc[0]
+    trans_df.columns=trans_df.iloc[0]
     trans_df=trans_df[1:]
     trans_df.index.names=['Years']
     return final_df,trans_df
+
+
+climate='API_19_DS2_en_csv_v2_6183479.csv'
+ele_rural='API_EG.ELC.ACCS.RU.ZS_DS2_en_csv_v2_5995527.csv'
+ele_urban='API_EG.ELC.ACCS.UR.ZS_DS2_en_csv_v2_5995527.csv'
+
+cntry_list=['Brazil','Russian Federation','South Africa','China','India']
+
+ind=['Population, total','Renewable electricity output (% of total electricity output)',
+    'Electricity production from oil sources (% of total)',
+    'Electricity production from nuclear sources (% of total)',
+    'Electricity production from natural gas sources (% of total)',
+    'Electricity production from hydroelectric sources (% of total)',
+    'Electricity production from coal sources (% of total)',
+    'Access to electricity (% of population)','Access to electricity, urban (% of urban population)',
+    'Access to electricity, rural (% of rural population)'
+    'Electricity production from renewable sources, excluding hydroelectric (% of total)',
+    'Electric power consumption (kWh per capita)']
+
+pop_tot,pop_tot_trans=readFile(climate,cntry_list,'Population, total')
+renew_op,renew_op_trans=readFile(climate,cntry_list,'Renewable electricity output (% of total electricity output)')
+oil,oil_trans=readFile(climate,cntry_list,'Electricity production from oil sources (% of total)')
+nuclear,nuclear_trans=readFile(climate,cntry_list,'Electricity production from nuclear sources (% of total)')
+gas,gas_trans=readFile(climate,cntry_list,'Electricity production from natural gas sources (% of total)')
+hydro,hydro_trans=readFile(climate,cntry_list,'Electricity production from hydroelectric sources (% of total)')
+coal,coal_trans=readFile(climate,cntry_list,'Electricity production from coal sources (% of total)')
+access_tot,access_tot_trans=readFile(climate,cntry_list,'Access to electricity (% of population)')
+access_urban,access_urban_trans=readFile(ele_urban,cntry_list,'Access to electricity, urban (% of urban population)')
+access_rural,access_rural_trans=readFile(ele_rural,cntry_list,'Access to electricity, rural (% of rural population)')
+renew,renew_trans=readFile(climate,cntry_list,'Electricity production from renewable sources, excluding hydroelectric (% of total)')
+ele_cons,ele_cons_trans=readFile(climate,cntry_list,'Electric power consumption (kWh per capita)')
+
+
 
 
 plt.figure(0)
@@ -43,7 +91,7 @@ plt.title('Electric power consumption')
 plt.show()
 
 
-
+pro_list=[oil,nuclear,gas,hydro,renew,coal]
 lst=[]
 for i in pro_list:
     a=i[i['Country Name']=='Russian Federation']['2014'].unique()[0]
