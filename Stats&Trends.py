@@ -23,7 +23,7 @@ def readFile(filename,cntry_list,indicator):
     ref_df=df[(df['Country Name'].isin(cntry_list)) & (df['Indicator Name']==indicator)]
     ref_df=ref_df.drop(df.columns[1:4],axis=1)
     ref_df=ref_df.drop(df.columns[-1:],axis=1)
-    yr=[str(year) for year in range(1960,2006)] + [str(year) for year in range(2015,2023)]
+    yr=[str(year) for year in range(1960,2005)] + [str(year) for year in range(2015,2023)]
     final_df=ref_df.drop(columns=yr)
     final_df=final_df.reset_index(drop=True)
     trans_df=final_df.transpose()
@@ -37,7 +37,7 @@ climate='API_19_DS2_en_csv_v2_6183479.csv'
 ele_rural='API_EG.ELC.ACCS.RU.ZS_DS2_en_csv_v2_5995527.csv'
 ele_urban='API_EG.ELC.ACCS.UR.ZS_DS2_en_csv_v2_5995527.csv'
 
-cntry_list=['Brazil','Russian Federation','South Africa','China','India']
+cntry_list=['Brazil','Argentina','Poland','China','Malaysia']
 
 ind=['Population, total','Renewable electricity output (% of total electricity output)',
     'Electricity production from oil sources (% of total)',
@@ -64,64 +64,66 @@ renew,renew_trans=readFile(climate,cntry_list,'Electricity production from renew
 ele_cons,ele_cons_trans=readFile(climate,cntry_list,'Electric power consumption (kWh per capita)')
 
 
-
-
-plt.figure(0)
-x=ele_cons['Country Name']
-
-y1 = ele_cons['2006']
-y2 = ele_cons['2008']
-y3 = ele_cons['2010']
-y4 = ele_cons['2012']
-y5 = ele_cons['2014']
-bar_width=0.1
-r1=range(len(x))
-r2 = [x + bar_width for x in r1]
-r3 = [x + bar_width for x in r2]
-r4 = [x + bar_width for x in r3]
-r5=[x+bar_width for x in r4]
-plt.bar(r1, y1, color='b', width=bar_width)
-plt.bar(r2, y2, color='r', width=bar_width)
-plt.bar(r3, y3, color='g', width=bar_width)
-plt.bar(r4, y4, color='y', width=bar_width)   
-plt.bar(r5, y5, width=bar_width)
-plt.xticks([r + bar_width for r in range(len(x))], x)
-plt.legend(['2006', '2008', '2010', '2012','2014'])
-plt.title('Electric power consumption')
-plt.show()
-
+def Barplot(data,bar_width=0.1):
+    plt.figure(0)
+    x=data['Country Name']
+    y1 = data['2006']
+    y2 = data['2008']
+    y3 = data['2010']
+    y4 = data['2012']
+    y5 = data['2014']
+    r1=range(len(x))
+    r2 = [x + bar_width for x in r1]
+    r3 = [x + bar_width for x in r2]
+    r4 = [x + bar_width for x in r3]
+    r5=[x+bar_width for x in r4]
+    plt.bar(r1, y1, color='b', width=bar_width)
+    plt.bar(r2, y2, color='r', width=bar_width)
+    plt.bar(r3, y3, color='g', width=bar_width)
+    plt.bar(r4, y4, color='y', width=bar_width)   
+    plt.bar(r5, y5, width=bar_width)
+    plt.xticks([r + bar_width for r in range(len(x))], x)
+    plt.legend(['2006', '2008', '2010', '2012','2014'])
+    plt.title('Electric power consumption')
+    plt.show()
+     
+Barplot(ele_cons,bar_width=0.1)
 
 pro_list=[oil,nuclear,gas,hydro,renew,coal]
-lst=[]
-for i in pro_list:
-    a=i[i['Country Name']=='Russian Federation']['2014'].unique()[0]
-    lst.append(a)
-src_list=['Oil','Nuclear','Natural Gas','Hydroelectric','Other Renewable','Coal']
-plt.figure(2)
-plt.pie(lst,labels=src_list,autopct='%1.1f%%', startangle=90,explode=(0.1,0,0,0,0.08,0))
-plt.title('Electricity production from different sources in Russian Federation')
-plt.show()
+def Pieplot(country,year):
+    lst=[]
+    for i in pro_list:
+        a=i[i['Country Name']==country][str(year)].unique()[0]
+        lst.append(a)
+    src_list=['Oil','Nuclear','Natural Gas','Hydroelectric','Other Renewable','Coal']
+    plt.figure(2)
+    plt.pie(lst,labels=src_list,autopct='%1.1f%%', startangle=90,explode=(0.1,0,0,0,0.08,0))
+    plt.title('Electricity production from different sources in Russian Federation')
+    plt.show()
+
+Pieplot('Brazil','2014')
 
 
 
 
+def TimeSeries(country):
+    tot_lst=list(access_tot[access_tot['Country Name']==country].iloc[0:,1:].values[0])
+    urban_lst=list(access_urban[access_urban['Country Name']==country].iloc[0:,1:].values[0])
+    rural_lst=list(access_rural[access_rural['Country Name']==country].iloc[0:,1:].values[0])
 
-tot_lst=list(access_tot[access_tot['Country Name']=='India'].iloc[0:,1:].values[0])
-urban_lst=list(access_urban[access_urban['Country Name']=='India'].iloc[0:,1:].values[0])
-rural_lst=list(access_rural[access_rural['Country Name']=='India'].iloc[0:,1:].values[0])
+    df_dict={'Years':list(np.arange(2005,2015)),
+            'Total':tot_lst,
+            'Urban':urban_lst,
+            'Rural':rural_lst}
+    df=pd.DataFrame(df_dict)
 
-india_df={'Years':list(np.arange(2006,2015)),
-         'Total':tot_lst,
-         'Urban':urban_lst,
-         'Rural':rural_lst}
-india=pd.DataFrame(india_df)
+    plt.figure(figsize=(10,6))
+    sns.set_style('whitegrid')
+    plt.plot(df['Years'],df['Total'],label='Total',linestyle='--',marker='o')
+    plt.plot(df['Years'],df['Urban'],label='Urban',linestyle='--',marker='o')
+    plt.plot(df['Years'],df['Rural'],label='Rural',linestyle='--',marker='o')
+    plt.title('Access to Electricity')
+    plt.legend()
+    plt.show()
 
-plt.figure(figsize=(10,6))
-
-plt.plot(india['Years'],india['Total'],label='Total',linestyle='--',marker='o')
-plt.plot(india['Years'],india['Urban'],label='Urban',linestyle='--',marker='o')
-plt.plot(india['Years'],india['Rural'],label='Rural',linestyle='--',marker='o')
-
-plt.title('Access to Electricity')
-plt.legend()
-plt.show()
+TimeSeries('Malaysia')
