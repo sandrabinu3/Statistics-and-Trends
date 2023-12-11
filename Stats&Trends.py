@@ -67,7 +67,7 @@ def Corr_Heatmap(year):
     # finding the corrilation between variables(corrilation matrix)
     corr_heat = heat_df.iloc[0:, 1:].corr()
     # plotting the heatmap using seaborn
-    plt.figure(figsize=(8, 8))
+    plt.figure(figsize=(8,6))
     sns.heatmap(corr_heat, annot=True, cmap='coolwarm', fmt=".2f",
                 linewidths=0.5)
     # giving title to plot
@@ -109,7 +109,7 @@ def Barplot(data, bar_width=0.1):
     # define and label the axes
     plt.xticks([r + bar_width for r in range(len(x))], x)
     plt.legend(['2006', '2008', '2010', '2012', '2014'])
-    plt.xlabel('Countries')
+    plt.xlabel('Country')
     plt.ylabel('Electricity Consumption in KWh')
     plt.title('Electric Power Consumption')
     plt.savefig('Boxplot.png')
@@ -240,9 +240,9 @@ def Distplot(country):
 
 
 # defining the filepaths
-climate = 'API_19_DS2_en_csv_v2_6183479.csv'
-ele_rural = 'API_EG.ELC.ACCS.RU.ZS_DS2_en_csv_v2_5995527.csv'
-ele_urban = 'API_EG.ELC.ACCS.UR.ZS_DS2_en_csv_v2_5995527.csv'
+climate = "API_19_DS2_en_csv_v2_6183479.csv"
+ele_rural = "API_EG.ELC.ACCS.RU.ZS_DS2_en_csv_v2_5995527.csv"
+ele_urban = "API_EG.ELC.ACCS.UR.ZS_DS2_en_csv_v2_5995527.csv"
 
 # selecting the needed countries for study
 cntry_list = ['Brazil', 'Argentina', 'Poland', 'China', 'Malaysia']
@@ -296,7 +296,7 @@ Barplot(ele_cons, bar_width=0.1)
 TimeSeries('Malaysia')
 
 ''' boxplot of selected countries' electrcity consumption'''
-Boxplot(ele_cons_trans)
+Boxplot(renew_op_trans)
 
 ''' pieplot of brazil showing its electricity production sources'''
 Pieplot('Brazil', '2014')
