@@ -67,13 +67,11 @@ def Corr_Heatmap(year):
     # finding the corrilation between variables(corrilation matrix)
     corr_heat = heat_df.iloc[0:, 1:].corr()
     # plotting the heatmap using seaborn
-    plt.figure(figsize=(8,6))
+    plt.figure(figsize=(8, 8))
     sns.heatmap(corr_heat, annot=True, cmap='coolwarm', fmt=".2f",
                 linewidths=0.5)
     # giving title to plot
-    plt.title('Correlation Matrix of selected Indicators in 2014')
-    # save the plot
-    plt.savefig('Heatmap.png')
+    plt.title('Correlation Matrix of selected Indicators in 2014',fontsize=14)
     # show the plot
     plt.show()
 
@@ -109,10 +107,9 @@ def Barplot(data, bar_width=0.1):
     # define and label the axes
     plt.xticks([r + bar_width for r in range(len(x))], x)
     plt.legend(['2006', '2008', '2010', '2012', '2014'])
-    plt.xlabel('Country')
+    plt.xlabel('Countries')
     plt.ylabel('Electricity Consumption in KWh')
     plt.title('Electric Power Consumption')
-    plt.savefig('Boxplot.png')
     plt.show()
 
 
@@ -149,14 +146,12 @@ def TimeSeries(country):
     plt.plot(df['Years'], df['Rural'], label='Access% in total Rural population',
              linestyle='--', marker='o')
     # labeling and limiting the axes
-    plt.title('Access to Electricity from 2005-2014 in Malaysia')
-    plt.xlabel('Years')
-    plt.ylabel('Access to Electricity(%)')
+    plt.title('Access to Electricity from 2005-2014 in Malaysia',fontsize=14)
+    plt.xlabel('Years',fontsize=14)
+    plt.ylabel('Access to Electricity(%)',fontsize=14)
     plt.xlim(2005, 2014)
     plt.ylim(97.5, 100)
-    plt.legend()
-    # save the figure
-    plt.savefig('Lineplot.png')
+    plt.legend(fontsize=14)
     plt.show()
 
 
@@ -170,10 +165,9 @@ def Boxplot(data):
     # plot the box plot using seaborn
     sns.boxplot(data)
     # labeling and saving the figure
-    plt.title('Spread of Renewable Electricity o/p (2005-2014)')
-    plt.ylabel('Renewable electricity output')
-    plt.xlabel('Country')
-    plt.savefig('Boxplot.png')
+    plt.title('Spread of Renewable Electricity o/p (2005-2014)',fontsize=14)
+    plt.ylabel('Renewable electricity output',fontsize=14)
+    plt.xlabel('Country',fontsize=14)
     plt.show()
 
 
@@ -201,7 +195,6 @@ def Pieplot(country, year):
                         "antialiased": True})
     # labeling and saving the figure
     plt.title('Electricity production from Different Sources in Brazil')
-    plt.savefig('Pieplot.png')
     plt.show()
 
 
@@ -228,21 +221,20 @@ def Distplot(country):
                  hist=True, kde=True, color='green')
     # finding skewness and kurtosis and labeling them in plot using plt.text()
     plt.text(x=65, y=0.175, s='Skewness: ' +
-             f'{np.round(skew(country_filt),2)}', color="red", fontsize=12)
+             f'{np.round(skew(country_filt),2)}', color="red", fontsize=14)
     plt.text(x=65, y=0.160, s='Kurtosis: ' +
-             f'{np.round(kurtosis(country_filt),2)}', color="red", fontsize=12)
+             f'{np.round(kurtosis(country_filt),2)}', color="red", fontsize=14)
     # labeling and saving the plot
-    plt.title('Distribution of Renewable Electricity o/p for Brazil (2005-2014)')
-    plt.xlabel('Renewable Electricity output(% of total)')
-    plt.ylabel('Density')
-    plt.savefig('Distplot.png')
+    plt.title('Distribution of Renewable Electricity o/p for Brazil (2005-2014)',fontsize=14)
+    plt.xlabel('Renewable Electricity output(% of total)',fontsize=14)
+    plt.ylabel('Density',fontsize=14)
     plt.show()
 
 
 # defining the filepaths
-climate = "API_19_DS2_en_csv_v2_6183479.csv"
-ele_rural = "API_EG.ELC.ACCS.RU.ZS_DS2_en_csv_v2_5995527.csv"
-ele_urban = "API_EG.ELC.ACCS.UR.ZS_DS2_en_csv_v2_5995527.csv"
+climate = 'Data/API_19_DS2_en_csv_v2_6183479.csv'
+ele_rural = 'Data/API_EG.ELC.ACCS.RU.ZS_DS2_en_csv_v2_5995527.csv'
+ele_urban = 'Data/API_EG.ELC.ACCS.UR.ZS_DS2_en_csv_v2_5995527.csv'
 
 # selecting the needed countries for study
 cntry_list = ['Brazil', 'Argentina', 'Poland', 'China', 'Malaysia']
@@ -276,14 +268,14 @@ ele_cons, ele_cons_trans = readFile(
 source_list = [oil, nuclear, gas, hydro, renew, coal]
 
 # gives the statistical description of the dataframe
-#calculate statistical properties of total access%
-access_tot_describe=access_tot.describe()
+# calculate statistical properties of total access%
+access_tot_describe = access_tot.describe()
 
-#calculate the mean urban and rural access% of selected countries in 2005 and 2014
-urb_05=np.round(access_urban['2005'].mean(),2)
-urb_14=np.round(access_urban['2014'].mean(),2)
-rur_05=np.round(access_rural['2005'].mean(),2)
-rur_14=np.round(access_rural['2014'].mean(),2)
+# calculate the mean urban and rural access% of selected countries in 2005 and 2014
+urb_05 = np.round(access_urban['2005'].mean(), 2)
+urb_14 = np.round(access_urban['2014'].mean(), 2)
+rur_05 = np.round(access_rural['2005'].mean(), 2)
+rur_14 = np.round(access_rural['2014'].mean(), 2)
 
 ''' heatmap showing the correlation between selected indicators'''
 Corr_Heatmap('2014')
@@ -296,7 +288,7 @@ Barplot(ele_cons, bar_width=0.1)
 TimeSeries('Malaysia')
 
 ''' boxplot of selected countries' electrcity consumption'''
-Boxplot(renew_op_trans)
+Boxplot(ele_cons_trans)
 
 ''' pieplot of brazil showing its electricity production sources'''
 Pieplot('Brazil', '2014')
