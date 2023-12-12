@@ -71,7 +71,7 @@ def Corr_Heatmap(year):
     sns.heatmap(corr_heat, annot=True, cmap='coolwarm', fmt=".2f",
                 linewidths=0.5)
     # giving title to plot
-    plt.title('Correlation Matrix of selected Indicators in 2014',fontsize=14)
+    plt.title('Correlation Matrix of selected Indicators in 2014', fontsize=14)
     # show the plot
     plt.show()
 
@@ -146,9 +146,9 @@ def TimeSeries(country):
     plt.plot(df['Years'], df['Rural'], label='Access% in total Rural population',
              linestyle='--', marker='o')
     # labeling and limiting the axes
-    plt.title('Access to Electricity from 2005-2014 in Malaysia',fontsize=14)
-    plt.xlabel('Years',fontsize=14)
-    plt.ylabel('Access to Electricity(%)',fontsize=14)
+    plt.title('Access to Electricity from 2005-2014 in Malaysia', fontsize=14)
+    plt.xlabel('Years', fontsize=14)
+    plt.ylabel('Access to Electricity(%)', fontsize=14)
     plt.xlim(2005, 2014)
     plt.ylim(97.5, 100)
     plt.legend(fontsize=14)
@@ -165,9 +165,9 @@ def Boxplot(data):
     # plot the box plot using seaborn
     sns.boxplot(data)
     # labeling and saving the figure
-    plt.title('Spread of Renewable Electricity o/p (2005-2014)',fontsize=14)
-    plt.ylabel('Renewable electricity output',fontsize=14)
-    plt.xlabel('Country',fontsize=14)
+    plt.title('Spread of Renewable Electricity o/p (2005-2014)', fontsize=14)
+    plt.ylabel('Renewable electricity output', fontsize=14)
+    plt.xlabel('Country', fontsize=14)
     plt.show()
 
 
@@ -225,9 +225,10 @@ def Distplot(country):
     plt.text(x=65, y=0.160, s='Kurtosis: ' +
              f'{np.round(kurtosis(country_filt),2)}', color="red", fontsize=14)
     # labeling and saving the plot
-    plt.title('Distribution of Renewable Electricity o/p for Brazil (2005-2014)',fontsize=14)
-    plt.xlabel('Renewable Electricity output(% of total)',fontsize=14)
-    plt.ylabel('Density',fontsize=14)
+    plt.title(
+        'Distribution of Renewable Electricity o/p for Brazil (2005-2014)', fontsize=14)
+    plt.xlabel('Renewable Electricity output(% of total)', fontsize=14)
+    plt.ylabel('Density', fontsize=14)
     plt.show()
 
 
